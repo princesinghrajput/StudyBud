@@ -1,13 +1,27 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
 
 # Create your views here.
 
 from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+rooms = [
+    {'id':1, 'name':'Lets learn Python'},
+    {'id':2, 'name':'Lets learn Django'},
+    {'id':3, 'name':'Lets learn Flask'},
+    
+]
 
-def room(request):
-    return HttpResponse("Hello, world.Room Index.")
+def home(request):
+    context = {'rooms':rooms}
+    return render(request, 'base/home.html', context)
+
+def room(request, pk):
+    room =None
+    for r in rooms:
+        if r['id'] == int(pk):
+            room = r
+            
+        context = {'room':room}
+    return render(request, 'base/room.html', context)
 
