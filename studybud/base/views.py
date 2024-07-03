@@ -5,12 +5,12 @@ from .models import Room
 
 from django.http import HttpResponse
 
-rooms = [
-    {'id':1, 'name':'Lets learn Python'},
-    {'id':2, 'name':'Lets learn Django'},
-    {'id':3, 'name':'Lets learn Flask'},
+# rooms = [
+#     {'id':1, 'name':'Lets learn Python'},
+#     {'id':2, 'name':'Lets learn Django'},
+#     {'id':3, 'name':'Lets learn Flask'},
     
-]
+# ]
 
 def home(request):
     rooms = Room.objects.all()
