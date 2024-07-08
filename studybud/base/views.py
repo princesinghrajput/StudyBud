@@ -14,6 +14,7 @@ from django.http import HttpResponse
 
 def home(request):
     rooms = Room.objects.all()
+    
 
     context = {'rooms':rooms}
     return render(request, 'base/home.html', context)
