@@ -29,9 +29,6 @@ def room(request, pk):
 
 
 
-
-
-
 def create_room(request):
     form = RoomForm()
     if request.method == 'POST':
@@ -65,4 +62,3 @@ def deleteRoom(request, pk):
         room.delete()
         return redirect('home')
     return render(request, 'base/delete.html', {'obj':room})
-    
