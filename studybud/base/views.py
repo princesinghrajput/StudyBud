@@ -44,6 +44,10 @@ def loginPage(request):
     context = {}
     return render(request, 'base/login_register.html', context)
 
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
 def home(request):
 
     q=request.GET.get('q') if request.GET.get('q') !=None else ''
