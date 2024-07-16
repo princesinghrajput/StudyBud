@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -22,6 +23,10 @@ from django.http import HttpResponse
 # ]
 
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -72,7 +77,7 @@ def room(request, pk):
 
 
 
-
+@login_required(login_url='login')
 def create_room(request):
     form = RoomForm()
     if request.method == 'POST':
@@ -85,10 +90,15 @@ def create_room(request):
     return render(request, 'base/room_form.html', context)
 
 
-
+@login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id =pk)
     form = RoomForm(instance=room)
+
+
+    # Restricting anyone to update with id
+    if request.user != room.host:
+        return HttpResponse('Youre not allowed here')
 
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
@@ -99,9 +109,15 @@ def updateRoom(request, pk):
     context = {'form': form}
     return render(request, 'base/room_form.html', context)
 
-
+@login_required(login_url='login')
 def deleteRoom(request, pk):
     room = Room.objects.get(id=pk)
+
+
+     # Restricting anyone to delete with id
+    if request.user != room.host:
+        return HttpResponse('Youre not allowed here')
+
     if request.method == 'POST':
         room.delete()
         return redirect('home')
