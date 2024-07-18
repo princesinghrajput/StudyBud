@@ -16,6 +16,7 @@ class Room(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,4 +39,4 @@ class Message(models.Model):
 
 
     def __str__(self):
-        return self.body[:50]
+        return self.body
