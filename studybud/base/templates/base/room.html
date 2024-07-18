@@ -24,4 +24,15 @@
     {% endfor %}
 
 </div>
+
+{% if request.user.is_authenticated %}
+<div class="comment-form">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="body" placeholder="Write your message here...">
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+{% endif %}
 {% endblock %}
