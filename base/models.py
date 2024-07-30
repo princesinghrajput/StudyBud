@@ -1,13 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+class User(AbstractUser):
+    pass
 
 class Topic(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+ 
 
 
 class Room(models.Model):
@@ -16,7 +21,7 @@ class Room(models.Model):
     name = models.CharField(max_length=100)
     #topic
     topic=models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
- 
+    participants=models.ManyToManyField(User, related_name='participants', blank=True)
     description = models.TextField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -33,11 +38,15 @@ class Message(models.Model):
     user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     body=models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
 
-
-
+    
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.body[:50]
+       
 
 
