@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
 from .models import Room, Topic, Message, User
-from .forms import RoomForm, UserForm
+from .forms import RoomForm, UserForm, MyUsercreationForm
 
 # from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm  
+# from django.contrib.auth.forms import UserCreationForm  
 
 # Create your views here.
 
@@ -24,10 +24,10 @@ from django.contrib.auth.forms import UserCreationForm
 # ]
 
 def registerPage(request):
-    form= UserCreationForm()
+    form= MyUsercreationForm()
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUsercreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username=user.username.lower()
@@ -51,17 +51,17 @@ def loginPage(request):
         return redirect('home')
 
     if request.method=='POST':
-        username= request.POST.get('username')
+        email= request.POST.get('email')
         password = request.POST.get('password')
 
        
 
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username=email)
         except:
             messages.error(request, "User Does Not Exists!")
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=email, password=password)
        
 
         if user is not None:
